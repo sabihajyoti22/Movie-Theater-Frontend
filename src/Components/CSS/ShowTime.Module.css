@@ -1,0 +1,18 @@
+p{
+    text-transform: uppercase;
+}
+.show-movies{
+    background-color: #0E0A47;
+}
+.col-border{
+    border-left: 1px solid rgb(255, 255, 255, 0.2);
+}
+.show-times{
+    background-color: #211c6b;
+    width: 100%;
+}
+.show-ticket{
+    background-color: #55C8FF;
+    border-left: 3px dotted #211c6b;
+    /* border-right: 3px dotted #211c6b; */
+}

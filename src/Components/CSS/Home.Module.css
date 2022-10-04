@@ -1,0 +1,364 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Josefin+Sans&family=Poppins&display=swap');
+
+h1, h2, h4, h5{
+    font-family: 'Josefin Sans', sans-serif;
+}
+h3{
+    font-family: 'Dancing Script', cursive;
+}
+/* Home */
+.background-header {
+    height: 100vh;
+    background-image: url("../../../public/Images/headerImage.jpg");
+    background-size: cover;
+}
+
+.brand-name {
+    font-family: 'Dancing Script', cursive;
+}
+
+.nav-link-headers {
+    text-transform: uppercase;
+    transition: 0.3s all;
+}
+
+.nav-link-headers:hover {
+    background-color: rgba(109, 104, 104, 0.3);
+    border-radius: 5px;
+}
+
+.nav-tog {
+    background-color: rgba(109, 104, 104, 0.3);
+}
+
+.horizontal-line {
+    color: white;
+    opacity: 1;
+}
+
+.header-h1 {
+    font-size: 50px;
+    font-weight: bold;
+    font-family: 'Josefin Sans', sans-serif;
+}
+
+.header-p {
+    font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.header-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 70vh;
+}
+
+.header-button {
+    width: 120px;
+    background-color: #A358D1;
+    border: 3px solid #A358D1;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.header-button:hover{
+    background-color: #a358d100;
+    border: 3px solid #A358D1;
+}
+
+/* Movies Section */
+.movies-section {
+    /* background-color: #3844CE; */
+}
+
+.movies-nav {
+    transition: all 0.3s;
+}
+
+.movies-nav:hover .movie-hr {
+    display: block;
+}
+
+.movie-hr {
+    display: none;
+    color: white;
+    opacity: 1;
+    border-top: 3px solid white;
+    animation: hr-anim 0.4s forwards linear 1;
+}
+
+@keyframes hr-anim {
+    from {
+        width: 0%;
+    }
+
+    to {
+        width: 80%;
+    }
+}
+
+.movies-card {
+    position: relative;
+    transition: all 0.3s;
+}
+
+.movies-rectangle {
+    display: none;
+    position: absolute;
+    background-image: linear-gradient(rgb(124, 51, 169, 0.5), rgba(10, 4, 13, 0.2));
+    height: 100%;
+    width: 100%;
+}
+
+.movies-card:hover .movies-rectangle {
+    display: block;
+    cursor: pointer;
+}
+
+.movies-icon {
+    overflow: hidden;
+    position: absolute;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 70px;
+    animation: icon-anim-up 0.4s forwards ease-out 1;
+}
+@keyframes icon-anim-up {
+    from {
+        top: 40%;
+    }
+    to {
+        top: 0px;
+        opacity: 0;
+    }
+}
+.movies-card:hover .movies-icon{
+    animation: icon-anim-down 0.4s forwards ease-out 1;
+}
+@keyframes icon-anim-down {
+    from {
+        top: 0px;
+    }
+    to {
+        top: 40%;
+    }
+}
+.movie-get-ticket {
+    position: absolute;
+    top: 80%;
+    background-color: #FF66F6;
+    color: white;
+    font-weight: bold;
+    width: 110px;
+    padding: 5px;
+    border: 3px solid #FF66F6;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+}
+.movie-get-ticket:hover{
+    cursor: pointer;
+    background-color: rgb(255, 102, 246, 0);
+}
+.movie-get-deails {
+    position: absolute;
+    top: 80%;
+    right: 0%;
+    background-color: #FF66F6;
+    color: white;
+    font-weight: bold;
+    width: 110px;
+    padding: 5px;
+    border: 3px solid #FF66F6;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 5px;
+    animation: get-details-right 0.4s forwards ease-out 1;
+}
+.movie-get-deails:hover{
+    cursor: pointer;
+    background-color: rgb(255, 102, 246, 0);
+}
+@keyframes get-details-right {
+    from {
+        top: 80%;
+        right: 0%;
+        opacity: 1;
+    }
+    to {
+        top: 80%;
+        /* right: -10%; */
+        opacity: 0;
+    }
+}
+.movies-card:hover .movie-get-deails {
+    animation: get-details-left 0.4s forwards ease-out 1;
+}
+@keyframes get-details-left {
+    from {
+        top: 80%;
+        /* right: -10%; */
+        opacity: 0;
+    }
+    to {
+        top: 80%;
+        right: 0%;
+        opacity: 1;
+    }
+}
+
+.movie-name {
+    /* display: none; */
+    top: 57%;
+    left: 20px;
+    position: absolute;
+    color: white;
+    font-family: 'Poppins', sans-serif;
+    font-size: 14px;
+    animation: movie-name-down 0.4s forwards ease-out 1;
+}
+@keyframes movie-name-down {
+    from {
+        top: 57%;
+        left: 20px;
+    }
+    to {
+        top: 65%;
+        left: 20px;
+        opacity: 0;
+    }
+}
+.movies-card:hover .movie-name {
+    display: block;
+    animation: movie-name-up 0.4s forwards ease-out 1;
+}
+@keyframes movie-name-up {
+    from {
+        top: 65%;
+        left: 20px;
+    }
+
+    to {
+        top: 57%;
+        left: 20px;
+    }
+}
+.movie-name p {
+    margin-bottom: 0px;
+}
+.movie-button {
+    background-color: #A358D1;
+    border: 3px solid #A358D1;
+    border-radius: 5px;
+    font-weight: bold;
+}
+.movie-button:hover{
+    background-color: #a358d100;
+    border: 3px solid #A358D1;
+}
+
+/* How It Works Section */
+.how-works{
+    background-color: #0E0A47;
+}
+.works-number{
+    color:#E487F2;
+    font-family: 'Dancing Script', cursive;
+}
+.works-hr{
+    color:#E487F2;
+    opacity: 1;
+    width: 22px;
+    margin: 0;
+}
+.works-div{
+    background-color: #E487F2;
+    width: 13px;
+    height: 13px;
+    border-radius: 100%;
+    padding: 0;
+    margin: 0;
+}
+.works-icons{
+    color: #E487F2;
+    font-size: 60px;
+}
+.works-h4{
+    font-family: 'Poppins', sans-serif;
+    color: white;
+    font-weight: bold;
+}
+
+/* Ticket Price */
+.ticket-price{
+    background-color: #FF66F5;
+    width: 40%;
+    color: #081253;
+}
+.ticket-price h4{
+    border-bottom: 2px dashed #081253;
+}
+.ticket-row{
+    border-bottom: 2px dashed #081253;
+}
+.ticket-design{
+    margin-top: -70px;
+    padding-left: 16px;
+}
+.ticket-circles{
+    height: 60px;
+    width: 60px;
+    background-color: #3844CE;
+    border-radius: 100%;
+}
+/* Concession */
+.concession{
+    background-color: #3844CE;
+    margin-top: -60px;
+    padding-top: 100px;
+}
+.concession h5{
+    border-bottom: 3px dotted rgb(255, 255, 255, 0.7);
+}
+.concession-button{
+    margin-top: 20px;
+    background-color: #3844CE;
+    font-family: 'Josefin Sans', sans-serif;
+}
+.concesion-image{
+    margin-top: -480px;
+}
+@media screen and (max-width: 995px){
+    .concesion-image{
+        display: none;
+    }
+}
+/* Join */
+.join-div{
+    color: white;
+    border: 2px solid #FF66F5;
+    font-family: 'Josefin Sans', sans-serif;
+    width: 50%;
+    font-size: 21px;
+    background-color: #0E0A47;
+    border-radius: 5px;
+}
+.join-div::placeholder{
+    color: #FF66F5;
+}
+.join-button{
+    color: #0E0A47;
+    background-color: #FF66F5;
+    font-size: 21px;
+    font-family: 'Josefin Sans', sans-serif;
+    border: none;
+}
+/* Footer */
+.footer{
+    background-color: #3844CE;
+}
+.footer button{
+    background-color: #3844CE;
+    border: 3px solid #5361f7;
+    font-family: 'Josefin Sans', sans-serif;
+}
+/* Header */
+.header-top{
+    background-color: #081253;
+}
