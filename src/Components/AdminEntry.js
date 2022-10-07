@@ -159,13 +159,6 @@ export default function Admin() {
     hall.hall3 = time3
     hall.hall4 = time4
 
-    const keys = Object.keys(hall);
-
-    keys.forEach((key, index) => {
-      console.log(`${key}: ${hall[key]}`);
-  });
-  console.log(hall)
-
     const formData = new FormData()
 
     formData.append("name", name)
@@ -175,7 +168,8 @@ export default function Admin() {
     formData.append("price", price)
     formData.append("category", category)
     location.forEach(loc => {formData.append("location[]", loc)})
-    formData.append("hall", hall)
+    formData.append("hall", JSON.stringify(hall))
+    // Object.keys(hall).forEach(key => formData.append(key, object[key]));
     image && formData.append("image", image, image.name)
 
     axios.post(serverURL + '/api/admin', formData)
