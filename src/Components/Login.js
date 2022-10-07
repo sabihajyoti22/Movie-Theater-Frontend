@@ -8,12 +8,11 @@ import { Form, Button, InputGroup } from 'react-bootstrap'
 import "./CSS/Auth.Module.css"
 import { UserContext } from '../UserContext'
 
-export default function Login() {
+export default function Login({ onGetUser}) {
   const { serverURL } = useContext(UserContext)
   const Password = useRef()
   const [error, setError] = useState("")
   const [showPass, setShowPass] = useState(false)
-  const [userInfo, setUserInfo] = useState()
   const [loginData, setLoginData] = useState({
     email: "",
     password: ""
@@ -34,13 +33,13 @@ export default function Login() {
     setLoginData({...loginData, [e.target.name]: e.target.value})
   }
 
-  const getUser = () => {
-    axios(serverURL + "/api/client/login", loginData)
+  const LoginUser = () => {
+    axios.post(serverURL + "/api/client/login", loginData)
     .then((res)=>{
       if(res.status === 202){
-        setUserInfo(res.data)
-        console.log("Login Successful")
-        console.log(userInfo)
+        // console.log("Login Successful")
+        onGetUser(res.data)
+        window.location.reload()
       }
       else {
         throw new Error("Couldn't find user")
@@ -53,11 +52,12 @@ export default function Login() {
 
   const handleSubmit = (e) => {
      e.preventDefault()
-     getUser()
-    //  setLoginData({
-    //   email: "",
-    //   password: ""
-    //  })
+    //  console.log(loginData)
+     LoginUser()
+     setLoginData({
+      email: "",
+      password: ""
+     })
   }
 
   return (

@@ -2,9 +2,11 @@ import React, { useContext, useRef, useState } from 'react'
 import Header from './Layouts/Header'
 import Footer from './Layouts/Footer'
 import ErrorMessage from './Layouts/ErrorMessage'
-import { UserContext } from "../UserContext"
 import SuccessMessage from './SuccessMessage'
+
 import "./CSS/Auth.Module.css"
+
+import { UserContext } from "../UserContext"
 import axios from "axios"
 
 import { Form, Button, InputGroup } from 'react-bootstrap'
@@ -31,8 +33,17 @@ export default function Register() {
   })
 
   const handleChange = (e) => {
-    console.log(e.target.name)
     setRegisterData({ ...registerData, [e.target.name]: e.target.value })
+  }
+
+  const handleImage = (e) => {
+    if (e.target.files[0].type === "image/png" || e.target.files[0].type === "image/jpg" || e.target.files[0].type === "image/jpeg") {
+      setErrorMessage(false)
+      setRegisterData({ ...registerData, [e.target.name]: e.target.files[0] })
+    }
+    else {
+      setErrorMessage(true)
+    }
   }
 
   const handleSubmit = (e) => {
@@ -43,8 +54,6 @@ export default function Register() {
     else {
       setPasswordError(false)
       e.preventDefault()
-
-      console.log(registerData)
 
       const formData = new FormData()
 
@@ -104,24 +113,19 @@ export default function Register() {
       setCShowPass(true)
     }
   }
-  const handleImage = (e) => {
-    if (e.target.files[0].type === "image/png" || e.target.files[0].type === "image/jpg" || e.target.files[0].type === "image/jpeg") {
-      setErrorMessage(false)
-      console.log(errorMessage)
-      setRegisterData({ ...registerData, [e.target.name]: e.target.files[0] })
-    }
-    else {
-      setErrorMessage(true)
-    }
-  }
+  
 
   return (
     <>
       <Header />
+
       {error && <h1 className='text-white'>{error}</h1>}
+
       <div className='login-div d-flex justify-content-center align-items-center'>
         <div className='login-form my-5 pb-4'>
+
           <h4 className='login-header text-center py-3'>Register Here</h4>
+
           <Form className='px-4 pt-4' onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicName">
               <Form.Label>Enter Full Name:</Form.Label>
@@ -197,7 +201,7 @@ export default function Register() {
 
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Choose An Image(optional)</Form.Label>
-              <Form.Control type="file" name="image" value={registerData.image} onChange={handleImage} />
+              <Form.Control type="file" name="image" onChange={handleImage} />
             </Form.Group>
 
             {errorMessage && <ErrorMessage msg="Please Insert only PNG, JPG, or JPEG Files" />}
@@ -208,12 +212,15 @@ export default function Register() {
             <Button variant="primary" type="submit" className='w-100 mb-3 mt-3'>
               Submit
             </Button>
+
             <hr />
+
           </Form>
           <div className='text-center'>
             <small>Already have an account? </small>
             <a href='/login' className='text-decoration-none' style={{ color: '#A358D1' }}>Login here</a>
           </div>
+          
         </div>
       </div>
       <Footer />
