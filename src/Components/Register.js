@@ -2,7 +2,7 @@ import React, { useContext, useRef, useState } from 'react'
 import Header from './Layouts/Header'
 import Footer from './Layouts/Footer'
 import ErrorMessage from './Layouts/ErrorMessage'
-import SuccessMessage from './SuccessMessage'
+import SuccessMessage from './Layouts/SuccessMessage'
 
 import "./CSS/Auth.Module.css"
 

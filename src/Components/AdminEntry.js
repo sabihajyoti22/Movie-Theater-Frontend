@@ -1,8 +1,9 @@
-import React, { useContext, useRef, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Header from './Layouts/Header'
 import Footer from './Layouts/Footer'
 import AdminPanel from './AdminPanel'
 import ErrorMessage from './Layouts/ErrorMessage'
+import SuccessMessage from './Layouts/SuccessMessage'
 
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { TiDelete } from "react-icons/ti"
@@ -23,6 +24,7 @@ export default function Admin() {
   var time;
   const [error, setError] = useState("")
   const [errorMessage, setErrorMessage] = useState()
+  const [successMessage, setSuccessMessage] = useState(false)
   const [flag1, setFlag1] = useState(false)
   const [flag2, setFlag2] = useState(false)
   const [flag3, setFlag3] = useState(false)
@@ -47,6 +49,7 @@ export default function Admin() {
     },
     image: "",
   })
+  const [movies, setMovies] = useState([])
 
   const { name, duration, release, genre, price, category, location, hall, image } = movieInfo
 
@@ -54,13 +57,22 @@ export default function Admin() {
   const selectedTime2 = useRef()
   const selectedTime3 = useRef()
   const selectedTime4 = useRef()
+  const imageInput = useRef()
 
   const handleChange = (e) => {
     setMovieInfo({ ...movieInfo, [e.target.name]: e.target.value })
   }
 
   const handleCheckboxLocation = (e) => {
+    if (e.target.checked) {
       location.push(e.target.value)
+    }
+    else {
+      if (location.indexOf(e.target.value) > -1) {
+        location.splice(location.indexOf(e.target.value), 1);
+      }
+    }
+
   }
 
   const handleAddTime = (e) => {
@@ -70,7 +82,12 @@ export default function Admin() {
         time = selectedTime1.current.value
 
         if (time) {
-          if (time.split(":")[0] > 12) {
+          if (time.split(":")[0] === "12") {
+            obj.id = new Date()
+            obj.time = time + " PM"
+            setTime1((oldArray) => [...oldArray, obj])
+          }
+          else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
             setTime1((oldArray) => [...oldArray, obj])
@@ -87,7 +104,12 @@ export default function Admin() {
         time = selectedTime2.current.value
 
         if (time) {
-          if (time.split(":")[0] > 12) {
+          if (time.split(":")[0] === "12") {
+            obj.id = new Date()
+            obj.time = time + " PM"
+            setTime2((oldArray) => [...oldArray, obj])
+          }
+          else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
             setTime2((oldArray) => [...oldArray, obj])
@@ -104,7 +126,12 @@ export default function Admin() {
         time = selectedTime3.current.value
 
         if (time) {
-          if (time.split(":")[0] > 12) {
+          if (time.split(":")[0] === "12") {
+            obj.id = new Date()
+            obj.time = time + " PM"
+            setTime3((oldArray) => [...oldArray, obj])
+          }
+          else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
             setTime3((oldArray) => [...oldArray, obj])
@@ -121,7 +148,12 @@ export default function Admin() {
         time = selectedTime4.current.value
 
         if (time) {
-          if (time.split(":")[0] > 12) {
+          if (time.split(":")[0] === "12") {
+            obj.id = new Date()
+            obj.time = time + " PM"
+            setTime4((oldArray) => [...oldArray, obj])
+          }
+          else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
             setTime4((oldArray) => [...oldArray, obj])
@@ -133,13 +165,16 @@ export default function Admin() {
           }
         }
         break;
-        default:
-          break;
+      default:
+        break;
     }
   }
 
   const handleDeleteTime = (id) => {
     setTime1(time1.filter(item => item.id !== id))
+    setTime2(time2.filter(item => item.id !== id))
+    setTime3(time3.filter(item => item.id !== id))
+    setTime4(time4.filter(item => item.id !== id))
   }
 
   const handleImage = (e) => {
@@ -159,6 +194,8 @@ export default function Admin() {
     hall.hall3 = time3
     hall.hall4 = time4
 
+    console.log(image)
+
     const formData = new FormData()
 
     formData.append("name", name)
@@ -167,29 +204,68 @@ export default function Admin() {
     formData.append("genre", genre)
     formData.append("price", price)
     formData.append("category", category)
-    location.forEach(loc => {formData.append("location[]", loc)})
+    location.forEach(loc => { formData.append("location[]", loc) })
     formData.append("hall", JSON.stringify(hall))
-    // Object.keys(hall).forEach(key => formData.append(key, object[key]));
     image && formData.append("image", image, image.name)
 
     axios.post(serverURL + '/api/admin', formData)
-    .then((res) => {
-      if (res.status === 201) {
-        // setSuccessMessage(true)
-        // setTimeout(()=>{
-        // setSuccessMessage(false)
-        // }, 2000)
-        console.log("Movie Created")
-      }
-      else {
-        throw new Error("Couldn't create review")
-      }
-    })
-    .catch((error) => {
-      setError(error.message)
-    })
+      .then((res) => {
+        if (res.status === 201) {
+          setSuccessMessage(true)
+          setTimeout(() => {
+            setSuccessMessage(false)
+          }, 2000)
+          getMovies()
+          setMovieInfo({
+            name: "",
+            duration: "",
+            release: "",
+            genre: "",
+            price: "",
+            category: "",
+            location: [],
+            hall: {
+              hall1: [],
+              hall2: [],
+              hall3: [],
+              hall4: [],
+            }
+          })
+          imageInput.current.value = null
+        }
+        else {
+          throw new Error("Couldn't create review")
+        }
+      })
+      .catch((error) => {
+        setError(error.message)
+      })
 
   }
+
+  const getMovies = () => {
+    axios.get(serverURL + "/api/admin")
+      .then((res) => {
+        setMovies(res.data)
+      })
+      .catch((error) => {
+        setError(error.message)
+      })
+  }
+
+  const deleteMovie = (id) => {
+    axios.delete(serverURL + "/api/admin" + `/${id}`)
+      .then((res) => {
+        getMovies()
+      })
+      .catch((error) => {
+        setError(error.message)
+      })
+  }
+
+  useEffect(() => {
+    getMovies()
+  }, [])
 
   return (
     <>
@@ -234,6 +310,7 @@ export default function Admin() {
                     type={type}
                     id={`inline-${type}-1`}
                     onChange={handleChange}
+
                   />
                   <Form.Check
                     inline
@@ -243,6 +320,7 @@ export default function Admin() {
                     type={type}
                     id={`inline-${type}-2`}
                     onChange={handleChange}
+                    required
                   />
                 </div>
               ))}
@@ -406,18 +484,14 @@ export default function Admin() {
               ))}
             </Form.Group>
 
-            {/* <Form.Group controlId="formTime" className="mb-3">
-              <Form.Label>Choose Time</Form.Label>
-              <Form.Control type="time" name="time" />
-            </Form.Group> */}
-
             <Form.Group controlId="formFile" className="mb-3">
               <Form.Label>Choose An Image</Form.Label>
-              <Form.Control type="file" name="image" onChange={handleImage} required/>
+              <Form.Control ref={imageInput} type="file" name="image" onChange={handleImage} required />
             </Form.Group>
 
             {errorMessage && <ErrorMessage msg="Please Insert only PNG, JPG, or JPEG Files" />}
 
+            {successMessage && <SuccessMessage msg="New User has Created" />}
 
             <Button variant="primary" type="submit" className='w-100 mb-3'>
               Submit
@@ -428,7 +502,7 @@ export default function Admin() {
         </div>
         {/* All Movies */}
 
-        <AdminPanel />
+        <AdminPanel movies={movies} onGetId={deleteMovie} />
       </div>
       <Footer />
     </>

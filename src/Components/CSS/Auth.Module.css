@@ -56,3 +56,13 @@ h4, h5{
     padding: 3px;
     color: green;
 }
+/* Admin Panel */
+th, tr{
+    font-family: 'Josefin Sans', sans-serif;
+}
+.delete-design{
+   color: red;
+}
+.delete-design:hover{
+    cursor: pointer;
+}

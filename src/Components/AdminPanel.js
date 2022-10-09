@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { Container, Table } from 'react-bootstrap'
 import { RiDeleteBin6Line } from 'react-icons/ri'
 
-export default function AdminPanel() {
+import { UserContext } from '../UserContext'
+
+export default function AdminPanel({ movies, onGetId }) {
+    var i=0;
+    const { serverURL } = useContext(UserContext)
+
+    const handleDelete = (id) => {
+        onGetId(id)
+    }
+
     return (
         <>
             <Container className='pb-5'>
                 <h1 style={{ color: '#3844CE' }} className='text-center py-5'>All Movies</h1>
-                <Table striped bordered responsive hover className='my-5'>
+                
+                <Table striped responsive hover className='my-5'>
                     <thead>
                         <tr>
                             <th>#</th>
@@ -18,27 +28,70 @@ export default function AdminPanel() {
                             <th>Price</th>
                             <th>Category</th>
                             <th>Location</th>
+                            <th>Hall</th>
                             <th>Movie Image</th>
-                            <th>Created On</th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td className='text-center'>
-                                <img src='Images/image1.jpg' alt='Movie' height="110" width="80" />
-                            </td>
-                            <td>@mdo</td>
-                            <td className='text-center'><RiDeleteBin6Line /></td>
-                        </tr>
+                        {movies.map((data) => {
+                            const { _id, name, duration, releaseDate, genre, price, category, location, hall, image} = data
+                            return <tr key={_id}>
+                                <td>{++i}</td>
+                                <td>{name}</td>
+                                <td>{duration}</td>
+                                <td>{releaseDate}</td>
+                                <td>{genre}</td>
+                                <td>{price}</td>
+                                <td>{category}</td>
+                                <td>
+                                    <ul>
+                                        {location.map((item,index)=>{
+                                            return <li key={index}>{item}</li>
+                                        })}
+                                    </ul>
+                                </td>
+                                <td>
+                                    <ul>
+                                        <li>Hall 1
+                                            <ul title='Show Times'>
+                                                {hall.hall1.map((item, index)=>{
+                                                    return <li key={index}>{item.time}</li>
+                                                })}
+                                            </ul>
+                                        </li>
+                                        <li>Hall 2
+                                        <ul title='Show Times'>
+                                                {hall.hall2.map((item, index)=>{
+                                                    return <li key={index}>{item.time}</li>
+                                                })}
+                                            </ul>
+                                        </li>
+                                        <li>Hall 3
+                                        <ul title='Show Times'>
+                                                {hall.hall3.map((item, index)=>{
+                                                    return <li key={index}>{item.time}</li>
+                                                })}
+                                            </ul>
+                                        </li>
+                                        <li>Hall 4
+                                        <ul title='Show Times'>
+                                                {hall.hall4.map((item, index)=>{
+                                                    return <li key={index}>{item.time}</li>
+                                                })}
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </td>
+                                <td className='text-center'>
+                                    <img src={serverURL + "/Uploads/Images/Movies/" + image} alt='Movie' height="110" width="80" />
+                                </td>
+                                <td className='text-center'>
+                                    <RiDeleteBin6Line onClick={()=> handleDelete(_id)} className="delete-design fs-3"/>
+                                </td>
+                            </tr>
+                        })}
+
                     </tbody>
                 </Table>
             </Container>
