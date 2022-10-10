@@ -7,12 +7,15 @@ import { Form, Button, InputGroup } from 'react-bootstrap'
 
 import "./CSS/Auth.Module.css"
 import { UserContext } from '../UserContext'
+import ErrorMessage from './Layouts/ErrorMessage'
 
-export default function Login({ onGetUser}) {
+export default function Login({ onGetUser }) {
   const { serverURL } = useContext(UserContext)
   const Password = useRef()
   const [error, setError] = useState("")
   const [showPass, setShowPass] = useState(false)
+  const [passwordError, setPasswordError] = useState(false)
+  const [userError, setUserError] = useState(false)
   const [loginData, setLoginData] = useState({
     email: "",
     password: ""
@@ -30,34 +33,48 @@ export default function Login({ onGetUser}) {
   }
 
   const handleChange = (e) => {
-    setLoginData({...loginData, [e.target.name]: e.target.value})
+    setLoginData({ ...loginData, [e.target.name]: e.target.value })
   }
 
   const LoginUser = () => {
     axios.post(serverURL + "/api/client/login", loginData)
-    .then((res)=>{
-      if(res.status === 202){
-        // console.log("Login Successful")
-        onGetUser(res.data)
-        window.location.reload()
-      }
-      else {
-        throw new Error("Couldn't find user")
-      }
-    })
-    .catch((err)=>{
-      setError(err.message)
-    })
+      .then((res) => {
+        if (res.status === 202) {
+          onGetUser(res.data)
+          if (res.data.fullname === "Admin") {
+            window.location.replace("/adminEntry")
+          }
+          else {
+            window.location.replace("/")
+          }
+        }
+        else if(res.status === 203){
+          setPasswordError(true)
+        }
+        else if(res.status === 204){
+          setUserError(true)
+        }
+        else {
+          throw new Error("Couldn't find user")
+          // console.log(res)
+        }
+      })
+      .catch((err) => {
+        setError(err.message)
+      })
   }
 
   const handleSubmit = (e) => {
-     e.preventDefault()
-    //  console.log(loginData)
-     LoginUser()
-     setLoginData({
+    e.preventDefault()
+    LoginUser()
+    setLoginData({
       email: "",
       password: ""
-     })
+    })
+    setTimeout(()=>{
+      setUserError(false)
+      setPasswordError(false)
+    }, 3000)
   }
 
   return (
@@ -70,7 +87,7 @@ export default function Login({ onGetUser}) {
           <Form className='px-4 pt-4' onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Email address</Form.Label>
-              <Form.Control name='email' type="email" placeholder="Enter email" onChange={handleChange} value={loginData.email}/>
+              <Form.Control name='email' type="email" placeholder="Enter email" onChange={handleChange} value={loginData.email} />
             </Form.Group>
 
             <Form.Label>Password</Form.Label>
@@ -88,6 +105,9 @@ export default function Login({ onGetUser}) {
                 <i onClick={clickHandler} className={showPass ? 'fas fa-eye-slash' : 'fas fa-eye'}></i>
               </InputGroup.Text>
             </InputGroup>
+
+            {userError && <ErrorMessage msg="User Couldn't Found"/>}
+            {passwordError && <ErrorMessage msg="Password Didn't Matched"/>}
 
             <Button variant="primary" type="submit" className='w-100 mb-3'>
               Submit

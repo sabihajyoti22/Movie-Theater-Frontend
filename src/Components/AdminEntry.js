@@ -7,6 +7,7 @@ import SuccessMessage from './Layouts/SuccessMessage'
 
 import { Form, Button, Row, Col } from 'react-bootstrap'
 import { TiDelete } from "react-icons/ti"
+import { AiTwotoneStar } from 'react-icons/ai'
 
 import 'react-calendar/dist/Calendar.css'
 import "./CSS/Auth.Module.css"
@@ -18,10 +19,14 @@ export default function Admin() {
   const { userLoggedIn, serverURL } = useContext(UserContext)
   const obj = {
     id: "",
+    day: 0,
+    status: "",
     time: ""
   }
   var nodeValue;
   var time;
+  const arrayDay = ["Sun", "Mon", "Tue", "Wed", "Thr", "Fri", "Sat"]
+
   const [error, setError] = useState("")
   const [errorMessage, setErrorMessage] = useState()
   const [successMessage, setSuccessMessage] = useState(false)
@@ -54,9 +59,13 @@ export default function Admin() {
   const { name, duration, release, genre, price, category, location, hall, image } = movieInfo
 
   const selectedTime1 = useRef()
+  const selectedDay1 = useRef()
   const selectedTime2 = useRef()
+  const selectedDay2 = useRef()
   const selectedTime3 = useRef()
+  const selectedDay3 = useRef()
   const selectedTime4 = useRef()
+  const selectedDay4 = useRef()
   const imageInput = useRef()
 
   const handleChange = (e) => {
@@ -75,6 +84,19 @@ export default function Admin() {
 
   }
 
+  const handleDay1 = (e) => {
+    selectedDay1.current.value = e.target.value
+  }
+  const handleDay2 = (e) => {
+    selectedDay2.current.value = e.target.value
+  }
+  const handleDay3 = (e) => {
+    selectedDay3.current.value = e.target.value
+  }
+  const handleDay4 = (e) => {
+    selectedDay4.current.value = e.target.value
+  }
+
   const handleAddTime = (e) => {
     nodeValue = e.target.parentElement.parentElement.parentElement.previousElementSibling.firstChild.value
     switch (nodeValue) {
@@ -85,16 +107,22 @@ export default function Admin() {
           if (time.split(":")[0] === "12") {
             obj.id = new Date()
             obj.time = time + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay1.current.value
             setTime1((oldArray) => [...oldArray, obj])
           }
           else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay1.current.value
             setTime1((oldArray) => [...oldArray, obj])
           }
           else {
             obj.id = new Date()
+            obj.status = e.target.name
             obj.time = time + " AM"
+            obj.day = selectedDay1.current.value
             setTime1((oldArray) => [...oldArray, obj])
           }
         }
@@ -107,16 +135,22 @@ export default function Admin() {
           if (time.split(":")[0] === "12") {
             obj.id = new Date()
             obj.time = time + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay2.current.value
             setTime2((oldArray) => [...oldArray, obj])
           }
           else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay2.current.value
             setTime2((oldArray) => [...oldArray, obj])
           }
           else {
             obj.id = new Date()
             obj.time = time + " AM"
+            obj.status = e.target.name
+            obj.day = selectedDay2.current.value
             setTime2((oldArray) => [...oldArray, obj])
           }
         }
@@ -129,16 +163,22 @@ export default function Admin() {
           if (time.split(":")[0] === "12") {
             obj.id = new Date()
             obj.time = time + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay3.current.value
             setTime3((oldArray) => [...oldArray, obj])
           }
           else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay3.current.value
             setTime3((oldArray) => [...oldArray, obj])
           }
           else {
             obj.id = new Date()
             obj.time = time + " AM"
+            obj.status = e.target.name
+            obj.day = selectedDay3.current.value
             setTime3((oldArray) => [...oldArray, obj])
           }
         }
@@ -151,16 +191,22 @@ export default function Admin() {
           if (time.split(":")[0] === "12") {
             obj.id = new Date()
             obj.time = time + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay4.current.value
             setTime4((oldArray) => [...oldArray, obj])
           }
           else if (time.split(":")[0] > 12) {
             obj.id = new Date()
             obj.time = time.split(":")[0] - 12 + ":" + time.split(":")[1] + " PM"
+            obj.status = e.target.name
+            obj.day = selectedDay4.current.value
             setTime4((oldArray) => [...oldArray, obj])
           }
           else {
             obj.id = new Date()
             obj.time = time + " AM"
+            obj.status = e.target.name
+            obj.day = selectedDay4.current.value
             setTime4((oldArray) => [...oldArray, obj])
           }
         }
@@ -169,7 +215,7 @@ export default function Admin() {
         break;
     }
   }
-
+  
   const handleDeleteTime = (id) => {
     setTime1(time1.filter(item => item.id !== id))
     setTime2(time2.filter(item => item.id !== id))
@@ -372,6 +418,11 @@ export default function Admin() {
 
             <Form.Group className="mb-3" controlId="formBasicHall">
               <Form.Label>Hall</Form.Label>
+              <Form.Label className='float-end'>
+                <AiTwotoneStar style={{ backgroundColor: '#55C8FF', borderRadius: '5px', color: "white" }} className='mb-2' /> <p className='d-inline text-center me-2'>VIP</p>
+                <AiTwotoneStar style={{ backgroundColor: '#5BDF83', borderRadius: '5px', color: "white" }} className='mb-2' /> <p className='d-inline text-center me-2'>Premium</p>
+                <AiTwotoneStar style={{ backgroundColor: '#FFD564', borderRadius: '5px', color: "white" }} className='mb-2' /> <p className='d-inline text-center me-1'>Other</p>
+              </Form.Label>
               {['checkbox'].map((type) => (
                 <div key={`inline-${type}`} className="mb-3">
                   <Form.Check
@@ -384,20 +435,45 @@ export default function Admin() {
                   {flag1 &&
                     <div>
                       <div className='my-2'>
+                        {/* Display Time */}
                         {time1.map((ob) => {
-                          const { id, time } = ob
-                          return <small key={id} className='me-2 px-2 py-1 bg-secondary text-white rounded-pill'>
-                            {time}
+                          const { id, status, day, time } = ob
+                          var colorTime = ""
+                          switch (status) {
+                            case "1": colorTime = "#55C8FF"
+                              break;
+                            case "2": colorTime = "#5BDF83"
+                              break;
+                            case "3": colorTime = "#FFD564"
+                              break;
+
+                            default:
+                              break;
+                          }
+                          return <small style={{backgroundColor: colorTime}} key={id} className='me-2 px-2 py-1 text-white rounded-pill'>
+                            {day+" "+time}
                             <TiDelete className='ms-1 fs-5' onClick={() => handleDeleteTime(id)} />
                           </small>
                         })}
                       </div>
+
+                      {/* Select Day */}
+                      <div className='mb-3'>
+                        {arrayDay.map((day, index) => {
+                          return <Button className='me-1' key={index} value={day} ref={selectedDay1} onClick={handleDay1}>{day}</Button>
+                        })}
+                      </div>
                       <Row>
-                        <Col lg='10'>
+                        <Col lg='9'>
                           <Form.Control type="time" name="time" className='mb-3' ref={selectedTime1} />
                         </Col>
-                        <Col lg='2'>
-                          <Button onClick={handleAddTime}>Add</Button>
+                        <Col lg='3' className='mb-3 text-center'>
+
+                          {/*Buttons */}
+                          <Button style={{ backgroundColor: '#55C8FF' }} className="px-2 py-1 me-1 d-inline border-0" name='1' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#5BDF83' }} className="px-2 py-1 me-1 border-0" name='2' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#FFD564' }} className="px-2 py-1 me-1 border-0" name='3' onClick={handleAddTime}>+</Button>
+
                         </Col>
                       </Row>
                     </div>}
@@ -411,19 +487,40 @@ export default function Admin() {
                   {flag2 && <div>
                     <div className='my-2'>
                       {time2.map((ob) => {
-                        const { id, time } = ob
-                        return <small key={id} className='me-2 px-2 py-1 bg-secondary text-white rounded-pill'>
-                          {time}
+                        const { id, status, day, time } = ob
+                        var colorTime = ""
+                        switch (status) {
+                          case "1": colorTime = "#55C8FF"
+                            break;
+                          case "2": colorTime = "#5BDF83"
+                            break;
+                          case "3": colorTime = "#FFD564"
+                            break;
+
+                          default:
+                            break;
+                        }
+                        return <small style={{backgroundColor: colorTime}} key={id} className='me-2 px-2 py-1 text-white rounded-pill'>
+                          {day+" "+time}
                           <TiDelete className='ms-1 fs-5' onClick={() => handleDeleteTime(id)} />
                         </small>
                       })}
                     </div>
+                    {/* Select Day */}
+                    <div className='mb-3'>
+                        {arrayDay.map((day, index) => {
+                          return <Button className='me-1' key={index} value={day} ref={selectedDay2} onClick={handleDay2}>{day}</Button>
+                        })}
+                      </div>
                     <Row>
-                      <Col lg='10'>
+                      <Col lg='9'>
                         <Form.Control type="time" name="time" className='mb-3' ref={selectedTime2} />
                       </Col>
-                      <Col lg='2'>
-                        <Button onClick={handleAddTime}>Add</Button>
+                      <Col lg='3'>
+                        {/*Buttons */}
+                          <Button style={{ backgroundColor: '#55C8FF' }} className="px-2 py-1 me-1 d-inline border-0" name='1' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#5BDF83' }} className="px-2 py-1 me-1 border-0" name='2' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#FFD564' }} className="px-2 py-1 me-1 border-0" name='3' onClick={handleAddTime}>+</Button>
                       </Col>
                     </Row>
                   </div>}
@@ -437,19 +534,40 @@ export default function Admin() {
                   {flag3 && <div>
                     <div className='my-2'>
                       {time3.map((ob) => {
-                        const { id, time } = ob
-                        return <small key={id} className='me-2 px-2 py-1 bg-secondary text-white rounded-pill'>
-                          {time}
+                        const { id, status, day, time } = ob
+                        var colorTime = ""
+                        switch (status) {
+                          case "1": colorTime = "#55C8FF"
+                            break;
+                          case "2": colorTime = "#5BDF83"
+                            break;
+                          case "3": colorTime = "#FFD564"
+                            break;
+
+                          default:
+                            break;
+                        }
+                        return <small style={{backgroundColor: colorTime}} key={id} className='me-2 px-2 py-1 text-white rounded-pill'>
+                          {day+" "+time}
                           <TiDelete className='ms-1 fs-5' onClick={() => handleDeleteTime(id)} />
                         </small>
                       })}
                     </div>
+                    {/* Select Day */}
+                    <div className='mb-3'>
+                        {arrayDay.map((day, index) => {
+                          return <Button className='me-1' key={index} value={day} ref={selectedDay3} onClick={handleDay3}>{day}</Button>
+                        })}
+                      </div>
                     <Row>
-                      <Col lg='10'>
+                      <Col lg='9'>
                         <Form.Control type="time" name="time" className='mb-3' ref={selectedTime3} />
                       </Col>
-                      <Col lg='2'>
-                        <Button onClick={handleAddTime}>Add</Button>
+                      <Col lg='3'>
+                        {/*Buttons */}
+                        <Button style={{ backgroundColor: '#55C8FF' }} className="px-2 py-1 me-1 d-inline border-0" name='1' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#5BDF83' }} className="px-2 py-1 me-1 border-0" name='2' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#FFD564' }} className="px-2 py-1 me-1 border-0" name='3' onClick={handleAddTime}>+</Button>
                       </Col>
                     </Row>
                   </div>}
@@ -464,19 +582,40 @@ export default function Admin() {
                   {flag4 && <div>
                     <div className='my-2'>
                       {time4.map((ob) => {
-                        const { id, time } = ob
-                        return <small key={id} className='me-2 px-2 py-1 bg-secondary text-white rounded-pill'>
-                          {time}
+                        const { id, status, day, time } = ob
+                        var colorTime = ""
+                        switch (status) {
+                          case "1": colorTime = "#55C8FF"
+                            break;
+                          case "2": colorTime = "#5BDF83"
+                            break;
+                          case "3": colorTime = "#FFD564"
+                            break;
+
+                          default:
+                            break;
+                        }
+                        return <small style={{backgroundColor: colorTime}} key={id} className='me-2 px-2 py-1 text-white rounded-pill'>
+                          {day+" "+time}
                           <TiDelete className='ms-1 fs-5' onClick={() => handleDeleteTime(id)} />
                         </small>
                       })}
                     </div>
+                    {/* Select Day */}
+                    <div className='mb-3'>
+                        {arrayDay.map((day, index) => {
+                          return <Button className='me-1' key={index} value={day} ref={selectedDay4} onClick={handleDay4}>{day}</Button>
+                        })}
+                      </div>
                     <Row>
-                      <Col lg='10'>
+                      <Col lg='9'>
                         <Form.Control type="time" name="time" className='mb-3' ref={selectedTime4} />
                       </Col>
-                      <Col lg='2'>
-                        <Button onClick={handleAddTime}>Add</Button>
+                      <Col lg='3'>
+                        {/*Buttons */}
+                        <Button style={{ backgroundColor: '#55C8FF' }} className="px-2 py-1 me-1 d-inline border-0" name='1' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#5BDF83' }} className="px-2 py-1 me-1 border-0" name='2' onClick={handleAddTime}>+</Button>
+                          <Button style={{ backgroundColor: '#FFD564' }} className="px-2 py-1 me-1 border-0" name='3' onClick={handleAddTime}>+</Button>
                       </Col>
                     </Row>
                   </div>}

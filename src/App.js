@@ -7,6 +7,7 @@ import BuyTicket from "./Components/BuyTicket";
 import Login from "./Components/Login";
 import Register from "./Components/Register"
 import AdminEntry from "./Components/AdminEntry";
+import ErrorPage from "./Components/ErrorPage";
 
 import { UserContext } from "./UserContext";
 
@@ -33,6 +34,7 @@ function App() {
             <Route path="/aboutUs" element={<AboutUs />} />
             <Route path="/buyTicket" element={<BuyTicket />} />
             <Route path="/adminEntry" element={<AdminEntry />} />
+            <Route path="*" element={<ErrorPage />} />
           </Routes>
         </BrowserRouter>
       </UserContext.Provider>

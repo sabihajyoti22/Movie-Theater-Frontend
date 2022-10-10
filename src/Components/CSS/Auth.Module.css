@@ -66,3 +66,8 @@ th, tr{
 .delete-design:hover{
     cursor: pointer;
 }
+/* Error Page */
+.error-div{
+    background-color: #F8EFF4;
+    height: 100vh;
+}

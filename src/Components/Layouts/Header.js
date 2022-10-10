@@ -10,7 +10,7 @@ export default function Header() {
 
   const handleLogOut = ()=>{
     sessionStorage.removeItem("User")
-    window.location.reload()
+    window.location.replace("/")
   }
 
   return (
