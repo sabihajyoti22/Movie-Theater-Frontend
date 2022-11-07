@@ -67,7 +67,7 @@ export default function ShowTime() {
       {allMovies.map((data, index) => {
         const { name, duration, releaseDate, genre, price, category, location, hall, image } = data
         hall.hall1.map((item)=>{
-          console.log(item)
+          console.log("Show Item")
         })
         return <Container key={index} fluid className='show-movies'>
           <Row className='my-3'>
